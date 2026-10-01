@@ -27,6 +27,10 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
 
+    # The built-in GITHUB_TOKEN needs write access to push the build to gh-pages.
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -50,5 +54,5 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
