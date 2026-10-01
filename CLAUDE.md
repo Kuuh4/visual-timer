@@ -34,7 +34,6 @@ Não existe script de lint no `package.json`, mas há configuração de ESLint e
 - `public/` — assets estáticos servidos como estão (áudios de alarme, ícones, `manifest.json`).
 - `scripts/strip-sourcemaps.mjs` — remove sourcemaps residuais do `dist/` depois do build, para que não vazem para o GitHub Pages.
 - `docs/superpowers/` — planos e especificações de design de features (hoje, o de notificações confiáveis em background). É documentação histórica de decisão: leia antes de alterar a arquitetura de notificações.
-- `meta/esqueleto/` — esqueleto de pastas do sistema pessoal de organização de arquivos do usuário, fora do versionamento (ignorado em `.git/info/exclude`). Não faz parte do app.
 - `.kilo/worktrees/` — worktrees git de outra ferramenta. **Nunca edite arquivos ali**; são cópias de trabalho separadas.
 
 ## Configuração e ambiente
