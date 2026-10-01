@@ -1,6 +1,33 @@
 # Changelog
 
-All notable changes to Mellow Visual Timer are documented in this file.
+All notable changes to Mellow Visual Timer are documented in this file. Longer discussions of why a
+change was made live in [DEVLOG.md](DEVLOG.md).
+
+## [Unreleased]
+
+### Added
+
+- A compact layout for square windows: the dial is centered and sized by the shorter viewport side, with the controls moved to the four corners.
+- The compact layout also takes over whenever either viewport side drops to 256px or less, whatever the proportion.
+- Corner controls become rounded tiles with the dial subtracted from them, so their inner edge follows the dial's arc, once a round button would reach into it.
+- A single 8px gap in the compact layout: between the dial and the window, between a control and the window, and between the dial and each control.
+- A Compact layout setting to restrict that layout to small windows, so large square windows keep the regular layout.
+- A setting for the remaining time in the compact layout: inside the dial, in the top-right corner, or hidden. In the corner option the unit switch takes the spot the countdown leaves on the dial.
+
+### Changed
+
+- Mirrored the bottom controls of the compact layout relative to the control row: reset on the left, add-time on the right.
+- Split the control row into individual buttons (`ListOrAddButton`, `StartStopButton`, `SettingsOrResetButton`) so the vertical, horizontal, and compact layouts share the same controls.
+- Replaced the `useAspectRatio` hook with `useViewportMetrics`, which also reports the viewport sides.
+
+### Fixed
+
+- The dial is no longer pushed below the center of the window when the window is reduced to a small square.
+- The minutes/seconds switch no longer reappears while a timer is paused, where using it would silently reset the countdown.
+
+### Changed (deployment)
+
+- Allowed `https://kuuh4.github.io` as an origin of the notifications Worker and pointed `homepage` at this fork's GitHub Pages URL.
 
 ## [0.5.0] - 2026-08-22
 

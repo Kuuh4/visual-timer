@@ -5,8 +5,10 @@ import { useTimerBase } from '../../../hooks/useTimer';
 import { useSelectedTimerStore } from '../../../store/selectedTimerStore';
 import { BaseTimerData } from '../../../store/types/timer';
 import { handleDragEvent, handleFinish } from '../../../utils/timerHandler';
-import ControlButtons from '../shared/controls/ControlButtons';
 import HomeButton from '../shared/controls/HomeButton';
+import ListOrAddButton from '../shared/controls/ListOrAddButton';
+import SettingsOrResetButton from '../shared/controls/SettingsOrResetButton';
+import StartStopButton from '../shared/controls/StartStopButton';
 import UnitSwitch from '../shared/controls/UnitSwitch';
 import TimeDisplay from '../shared/displays/TimeDisplay';
 import TimerDisplay from '../shared/displays/TimerDisplay';
@@ -72,23 +74,30 @@ const BaseTimer: React.FC<{ timer: BaseTimerData }> = ({ timer }) => {
                 <UnitSwitch
                     onClick={toggleUnit}
                     isMinutes={isMinutes}
-                    isRunning={timer.id === defaultTimer.id ? isRunning : true}
+                    // Saved timers carry their own unit, so only the default timer may switch it —
+                    // and only while idle: paused counts as started.
+                    isVisible={timer.id === defaultTimer.id && isInitialized}
                     currentTheme={selectedThemeCopy}
                 />
             ),
         },
-        bottom: (
-            <ControlButtons
-                isMinutes={isMinutes}
-                isRunning={isRunning}
-                isInitialized={isInitialized}
-                currentTheme={selectedThemeCopy}
-                start={start}
-                stop={stop}
-                reset={reset}
-                add={add}
-            />
-        ),
+        controls: {
+            leftAction: (
+                <ListOrAddButton
+                    isMinutes={isMinutes}
+                    isInitialized={isInitialized}
+                    currentTheme={selectedThemeCopy}
+                    add={add}
+                />
+            ),
+            startStop: (
+                <StartStopButton isRunning={isRunning} currentTheme={selectedThemeCopy} start={start} stop={stop} />
+            ),
+            rightAction: (
+                <SettingsOrResetButton isInitialized={isInitialized} currentTheme={selectedThemeCopy} reset={reset} />
+            ),
+        },
+        currentTime,
         timerInfo: <TimeDisplay currentTime={currentTime} className="my-3" />,
         timer: (
             <TimerDisplay

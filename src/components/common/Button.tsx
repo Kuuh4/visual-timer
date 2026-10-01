@@ -1,38 +1,58 @@
 import React from 'react';
 import { Theme } from '../../store/types/theme';
+import { useCornerSlot, wedgeContentStyle, wedgeStyle } from './cornerSlot';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  currentTheme?: Theme;
-  visible?: boolean;
+    currentTheme?: Theme;
+    visible?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
-  currentTheme,
-  visible = true,
-  children,
-  onClick,
-  className = '',
-  type = 'button',
-  style,
-  disabled,
-  ...props
+    currentTheme,
+    visible = true,
+    children,
+    onClick,
+    className = '',
+    type = 'button',
+    style,
+    disabled,
+    ...props
 }) => {
-  return (
-    <button
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      className={`btn-tactile flex size-16 shrink-0 items-center justify-center rounded-full font-medium transition-all ${
-        visible ? 'visible' : 'invisible'
-      } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer active:scale-95'} ${
-        currentTheme ? 'text-white shadow-soft' : ''
-      } ${className}`}
-      style={currentTheme ? { backgroundColor: currentTheme.color.point, ...style } : style}
-      {...props}
-    >
-      {children}
-    </button>
-  );
+    const cornerSlot = useCornerSlot();
+    const wedgeCorner = cornerSlot?.isWedge ? cornerSlot.corner : null;
+
+    // A wedge is anchored to its corner, so the press-scale feedback of `btn-tactile` would pull it
+    // away from the edge; it dims instead.
+    const shapeClassName = wedgeCorner
+        ? `${disabled ? '' : 'active:brightness-90'}`
+        : `btn-tactile size-16 items-center justify-center rounded-full ${disabled ? '' : 'active:scale-95'}`;
+
+    return (
+        <button
+            type={type}
+            onClick={onClick}
+            disabled={disabled}
+            className={`flex shrink-0 font-medium transition-all ${shapeClassName} ${
+                visible ? 'visible' : 'invisible'
+            } ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} ${
+                currentTheme ? 'text-white shadow-soft' : ''
+            } ${className}`}
+            style={{
+                ...(wedgeCorner ? wedgeStyle(wedgeCorner) : {}),
+                ...(currentTheme ? { backgroundColor: currentTheme.color.point } : {}),
+                ...style,
+            }}
+            {...props}
+        >
+            {wedgeCorner ? (
+                <span className="flex items-center justify-center" style={wedgeContentStyle(wedgeCorner)}>
+                    {children}
+                </span>
+            ) : (
+                children
+            )}
+        </button>
+    );
 };
 
 export default Button;

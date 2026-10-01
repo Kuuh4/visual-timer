@@ -6,9 +6,11 @@ import { useTimerBase } from '../../../hooks/useTimer';
 import { useSelectedTimerStore } from '../../../store/selectedTimerStore';
 import { RoutineTimerData } from '../../../store/types/timer';
 import { handleFinish } from '../../../utils/timerHandler';
-import ControlButtons from '../shared/controls/ControlButtons';
 import HomeButton from '../shared/controls/HomeButton';
+import ListOrAddButton from '../shared/controls/ListOrAddButton';
 import RepeatSwitch from '../shared/controls/RepeatSwitch';
+import SettingsOrResetButton from '../shared/controls/SettingsOrResetButton';
+import StartStopButton from '../shared/controls/StartStopButton';
 import TimerDisplay from '../shared/displays/TimerDisplay';
 import TimerContent, { TimerContentProps } from '../shared/TimerContent';
 import TimerList from './TimerList';
@@ -83,18 +85,27 @@ const RoutineTimer: React.FC<{ timer: RoutineTimerData }> = ({ timer }) => {
             leftChildren: <HomeButton isVisible={timer.id !== defaultTimer.id} onClick={selectDefaultTimer} />,
             rightChildren: <RepeatSwitch onClick={toggleRepeat} repeat={repeat} currentTheme={selectedThemeCopy} />,
         },
-        bottom: (
-            <ControlButtons
-                isMinutes={isMinutes}
-                isRunning={isItemRunning}
-                isInitialized={isInitialized}
-                currentTheme={selectedThemeCopy}
-                start={start}
-                stop={stop}
-                reset={resetRoutine}
-                add={add}
-            />
-        ),
+        controls: {
+            leftAction: (
+                <ListOrAddButton
+                    isMinutes={isMinutes}
+                    isInitialized={isInitialized}
+                    currentTheme={selectedThemeCopy}
+                    add={add}
+                />
+            ),
+            startStop: (
+                <StartStopButton isRunning={isItemRunning} currentTheme={selectedThemeCopy} start={start} stop={stop} />
+            ),
+            rightAction: (
+                <SettingsOrResetButton
+                    isInitialized={isInitialized}
+                    currentTheme={selectedThemeCopy}
+                    reset={resetRoutine}
+                />
+            ),
+        },
+        currentTime,
         timerInfo: (
             <>
                 <div className="my-3 text-balance px-[5%] text-center text-2xl">{title}</div>

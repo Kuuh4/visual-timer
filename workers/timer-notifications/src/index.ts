@@ -3,7 +3,7 @@ import type { WorkerEnv } from './types';
 
 export { TimerSchedule };
 
-const allowedOrigins = new Set(['https://do0ori.github.io', 'http://localhost:3000']);
+const allowedOrigins = new Set(['https://do0ori.github.io', 'https://kuuh4.github.io', 'http://localhost:3000']);
 
 const corsHeaders = (origin: string | null) => {
     const headers = new Headers();

@@ -4,11 +4,12 @@ import Switch from '../../../common/Switch';
 type UnitSwitchProps = {
     onClick: () => void;
     isMinutes: boolean;
-    isRunning: boolean;
+    /** Only while the timer sits untouched: changing the unit mid-countdown would reset it. */
+    isVisible: boolean;
     currentTheme: Theme;
 };
 
-const UnitSwitch: React.FC<UnitSwitchProps> = ({ onClick, isMinutes, isRunning, currentTheme }) => {
+const UnitSwitch: React.FC<UnitSwitchProps> = ({ onClick, isMinutes, isVisible, currentTheme }) => {
     return (
         <Switch
             options={[
@@ -18,7 +19,7 @@ const UnitSwitch: React.FC<UnitSwitchProps> = ({ onClick, isMinutes, isRunning, 
             value={isMinutes ? 'minutes' : 'seconds'}
             onChange={() => onClick()}
             backgroundColor={currentTheme.color.point}
-            isVisible={!isRunning}
+            isVisible={isVisible}
         />
     );
 };
